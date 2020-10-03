@@ -1,5 +1,3 @@
-# journaling-webapp
+# react-typescript-firebase-auth
 
-## Publish to Firebase
-    npm run build
-    firebase deploy
+create-react-app with TypeScript and Firebase authentication

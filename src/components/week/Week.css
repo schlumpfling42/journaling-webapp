@@ -1,0 +1,49 @@
+div.page {
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow-y: scroll;
+  position: fixed;
+  top: 55px;
+  bottom: 75px;
+  right: 0px;
+  left: 0px;
+}
+
+div.actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto min-content min-content;
+  align-self: baseline;
+}
+
+i.value-button {
+  font-size: 20pt;
+  display: inline;
+  vertical-align: middle;
+  border: 1px transparent;
+}
+
+div.actions button:disabled, div.add-button button:disabled {
+  color: #bfbfc585;
+}
+
+div.actions button, div.add-button button {
+  padding: 0px;
+  margin: auto;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 32px;
+}
+
+div.actions button:focus,  div.add-button button:hover, div.add-button button:focus {
+  margin: auto;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 32px;
+}
+
+button:enabled i:hover {
+  cursor: pointer;
+}

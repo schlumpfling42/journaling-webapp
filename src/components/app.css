@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+div.page {
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow-y: scroll;
+  position: fixed;
+  top: 55px;
+  bottom: 75px;
+  right: 0px;
+  left: 0px;
+}
+
+div.page-noscroll {
+  margin-left: 20px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow-y: hidden;
+  position: fixed;
+  top: 55px;
+  bottom: 75px;
+  right: 0px;
+  left: 0px;
+}
+
+div.pin {
+  position: absolute; 
+  left: 0; 
+  right: 0; 
+  top: 250px;
+  margin-left: auto; 
+  margin-right: auto; 
+  width: 350;
+  height: 100px;
+  text-align: center;
+}
+
+div.pin p {
+  font-size: x-large;
+}
+
+div.pin input {
+  font-size: x-large;
+  text-align: center;
+}
+
+.cssload-container {
+  position: absolute;
+  top:40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cssload-speeding-wheel {
+	width: 49px;
+	height: 49px;
+	margin: 0 auto;
+	border: 3px solid rgb(0,0,0);
+	border-radius: 50%;
+	border-left-color: transparent;
+	border-right-color: transparent;
+	animation: cssload-spin 575ms infinite linear;
+		-o-animation: cssload-spin 575ms infinite linear;
+		-ms-animation: cssload-spin 575ms infinite linear;
+		-webkit-animation: cssload-spin 575ms infinite linear;
+		-moz-animation: cssload-spin 575ms infinite linear;
+}
+
+@keyframes cssload-spin {
+	100%{ transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-o-keyframes cssload-spin {
+	100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-ms-keyframes cssload-spin {
+	100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-webkit-keyframes cssload-spin {
+	100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@-moz-keyframes cssload-spin {
+	100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
