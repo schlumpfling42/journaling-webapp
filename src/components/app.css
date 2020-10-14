@@ -4,8 +4,8 @@ body {
   font-family: sans-serif;
 }
 
-div.page {
-  margin-left: 20px;
+div.page-week {
+  margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -15,6 +15,25 @@ div.page {
   bottom: 75px;
   right: 0px;
   left: 0px;
+}
+
+div.page {
+  display: block; 
+  margin-left: 10px;
+  margin-right: 0px;
+  margin-top: 10px;
+  overflow: visible;
+  position: fixed;
+  top: 55px;
+  right: 0px;
+  left: 0px;
+  bottom: 75px;
+  overflow-inline: inherit;
+}
+div.page-content {
+  overflow-y: scroll;
+  max-height: 100%;
+  overscroll-behavior: contain;
 }
 
 div.page-noscroll {
@@ -91,4 +110,114 @@ div.pin input {
 
 @-moz-keyframes cssload-spin {
 	100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+div.add-button {
+  display: flex;
+  align-self: center;
+}
+
+div.line {
+  margin-left: 20px;
+  display: grid;
+  grid-template-columns: auto min-content;
+  column-gap: 10px;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+div.line:not(:first-child) { 
+  border-bottom: 0px;
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 1px solid lightgray;
+}
+
+div.actions {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  display: grid;
+  grid-template-columns: min-content min-content;
+  column-gap: 5px;
+  align-self: center;
+  align-items: center;
+}
+
+div.value-line {
+}
+
+div.line-element, input.line-element, label.line-element, select.line-element, a.line-element {
+  font-size: 14pt;
+  align-self: center;
+  white-space: nowrap;
+}
+
+textarea.line-element {
+  margin: 0px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: -1px;
+  border: 1px;
+  border-style: solid;
+  font-family: sans-serif;
+  font-size: 14pt;
+  resize: vertical;
+}
+input[type="text"].line-element {
+  flex-grow: 1;
+}
+
+div.flex {
+  display: inline-flex;
+  flex: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+}
+
+div.flex5 {
+  display: inline-flex;
+  flex: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: baseline;
+}
+
+div.nowrapflex {
+  display: inline-flex;
+  flex: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+}
+
+i.value-button {
+  font-size: 20pt;
+  display: inline;
+  vertical-align: middle;
+  border: 1px transparent;
+}
+
+div button:disabled {
+  color: #bfbfc585;
+}
+
+div button {
+  padding: 0px;
+  margin: 5px;
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 32px;
+}
+
+div button:focus {
+  margin: none;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 32px;
+}
+
+button:enabled i:hover {
+  cursor: pointer;
 }

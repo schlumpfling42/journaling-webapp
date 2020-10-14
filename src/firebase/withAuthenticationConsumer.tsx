@@ -6,8 +6,8 @@ export const withAuthenticationConsumer = (Component: any) => {
 
       return (
         <AuthUserContext.Consumer>
-          {authUser => (
-            <Component authUser={authUser} {...props} />
+          {({authUser, fbAccessToken, fbUserId}) => (
+            <Component authUser={authUser} fbAccessToken={fbAccessToken} fbUserId={fbUserId} {...props} />
           )}
         </AuthUserContext.Consumer>
       );

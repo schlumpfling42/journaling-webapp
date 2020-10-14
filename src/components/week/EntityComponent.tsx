@@ -9,8 +9,13 @@ export const  EntityComponent = (props: any) => {
   const cancelCallback = props.cancelCallback;
   const [entity, setEntity] = useState<Entity>(props.entity);
   const oldEntity = {...props.entity};
+  const [isSelected, setSelected] = useState<boolean>(props.isSelected);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  if(isSelected !== props.isSelected) {
+    setSelected(props.isSelected);
+  }
 
   const editValue = () => {
     selectCallback(entity);
@@ -43,12 +48,15 @@ export const  EntityComponent = (props: any) => {
     textareaRef?.current?.focus();
     if(entity.value) {
       textareaRef?.current?.setSelectionRange(entity.value.length, entity.value.length); 
+      if(textareaRef && textareaRef.current) {
+        textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
+      }
     }
-  }, []);
+  }, [isSelected]);
 
-  if(props.isSelected) {
+  if(isSelected === true) {
     return (
-      <div key={entity.id + "_div"} className="value">
+      <div key={entity.id + "_div"} className="line">
         <textarea ref={textareaRef} key={entity.id + "_value"} className="entityText" value={entity.value ? entity.value : ""} onChange={valueChanged} rows={4}/>
         <div key={entity.id + "_actions"} className="actions">
           <button key={entity.id + "_save_button"} className="save-value" onClick={saveValue}>
@@ -62,7 +70,7 @@ export const  EntityComponent = (props: any) => {
     )
   } else {
     return (
-      <div key={entity.id + "_div"} className="value">
+      <div key={entity.id + "_div"} className="line">
         <p key={entity.id + "_value"} className="entityText">{entity.value}</p>
         <div key={entity.id + "_actions"} className="actions">
           <button key={entity.id + "_edit_button"} className="edit-value" onClick={editValue} disabled={props.selected}>
@@ -70,7 +78,7 @@ export const  EntityComponent = (props: any) => {
           </button>
           <button key={entity.id + "_delete_button"} className="delete-value" onClick={deleteValue} disabled={props.selected}>
             <i key={entity.id + "_save_img"} className="material-icons md-dark value-button">delete</i>
-          </button>
+          </button> 
         </div>
       </div>
     )

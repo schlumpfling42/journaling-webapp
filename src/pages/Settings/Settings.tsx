@@ -1,4 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { PinComponent } from 'src/components/pin';
 import { getSettings, updateSettings } from '../../firebase/store';
 import { withAuthenticationConsumer } from "../../firebase/withAuthenticationConsumer";
 import { formatYYYYMMDD } from '../../utils/date';
@@ -9,7 +10,6 @@ const settingsComponent = (props: any) => {
 
   const [settings, setSettings] = useState<any>(null);
   const [startDate, setStartDate] = useState<string>("");
-  const [pinEntered, setPinEntered] = useState<boolean>();
   const [hasPin, setHasPin] = useState<boolean>();
   const [changePin, setChangePin] = useState<boolean>(false);
   const [pin, setPin] = useState<string>();
@@ -18,8 +18,10 @@ const settingsComponent = (props: any) => {
   const [pinConfirmMatch, setPinConfirmMatch] = useState<boolean>(false);
 
   const [authUser] = useState(props.authUser);
+  // const [accessToken] = useState(props.fbAccessToken);
+  // const [userId] = useState(props.fbUserId);
 
-  const pinRef = useRef<HTMLInputElement>(null);
+  // const [groups, setGroups] = useState();
 
   useEffect(() => {
     let mounted = true;
@@ -41,11 +43,6 @@ const settingsComponent = (props: any) => {
           const pinFromSettings: string = data.pin;
           if(pinFromSettings) {
             setPin(pinFromSettings);
-            setHasPin(true);
-            setPinEntered(false);
-          } else {
-            setHasPin(false);
-            setPinEntered(false);
           }
         } else {
           setSettings({userId: props.authUser.uid});
@@ -56,6 +53,15 @@ const settingsComponent = (props: any) => {
       mounted = false;
     }
   }, [authUser]);
+
+  // useEffect(() => {
+  //   if(userId && accessToken) {
+  //     fetch( "https://graph.facebook.com/"+userId+"/groups?access_token="+accessToken)
+  //         .then(response => response.json())
+  //         .then(result => setGroups(result));
+  //   }
+
+  // }, [userId, accessToken]);
 
   useEffect(() => {
     if(settings != null) {
@@ -113,12 +119,6 @@ const settingsComponent = (props: any) => {
     }
   }
 
-  const pinChallengeEntered = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if(pin === event.target.value) {
-      setPinEntered(true);
-    }
-  }
-
   const editPin = () => {
     setChangePin(true);
   }
@@ -136,24 +136,8 @@ const settingsComponent = (props: any) => {
     setChangePin(false);
   }
 
-  useLayoutEffect(() => {
-    if(hasPin === true && pinEntered === false) {
-      pinRef?.current?.focus();
-    }
-  })
-
   return (
-    hasPin === undefined ?
-    <div className="cssload-container">
-      <div className="cssload-speeding-wheel"/>
-    </div>
-  :
-    pinEntered === false && hasPin === true ?
-      <div className="pin">      
-        <p>Enter PIN to access Settings</p>
-        <input ref={pinRef} type="password" minLength={4} maxLength={8} size={8}  onChange={pinChallengeEntered}/>
-      </div>
-    :
+    <PinComponent authUser={props.authUser}>
       <div className="page">
         <h2>Settings</h2>
         <div className="settings">
@@ -167,7 +151,7 @@ const settingsComponent = (props: any) => {
           {
             changePin === false ?
               <div className="pinValue">
-                <input type="password" minLength={4} maxLength={8} size={8} id="pin" className="settingValue"  value={pin} disabled={true}/>
+                <input type="password" minLength={4} maxLength={8} size={8} id="pin" className="settingValue"  value={pin ? pin : ""} disabled={true}/>
                 <div className="actions">
                   <button className="save-value" onClick={editPin}>
                     <i className="material-icons md-dark value-button">create</i>
@@ -181,9 +165,9 @@ const settingsComponent = (props: any) => {
             <div className="pinEdit">
               <div className="pinEditValues">
               <label>New PIN</label>
-                <input id="pin" type="password" minLength={4} maxLength={8} size={8} className="settingValue" onChange={newPinValueChanged} value={newPin}/>
+                <input id="pin" type="password" minLength={4} maxLength={8} size={8} className="settingValue" onChange={newPinValueChanged} value={newPin ? newPin : ""}/>
                 <label>Confirm PIN</label>
-                <input id="pinConfirm" type="password" minLength={4} maxLength={8} size={8} className="settingValue" onChange={newPinConfirmValueChanged} value={newPinConfirm}/>
+                <input id="pinConfirm" type="password" minLength={4} maxLength={8} size={8} className="settingValue" onChange={newPinConfirmValueChanged} value={newPinConfirm ? newPinConfirm : ""}/>
               </div>
               <div className="actions">
                 <button className="save-value" onClick={savePinValue} disabled={pinConfirmMatch===false}>
@@ -197,6 +181,7 @@ const settingsComponent = (props: any) => {
           }
         </div>
       </div>
+    </PinComponent>
   );
 }
 

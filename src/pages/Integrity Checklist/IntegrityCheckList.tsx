@@ -6,7 +6,7 @@ import { withAuthenticationConsumer } from '../../firebase/withAuthenticationCon
 export const  IntegrityChecklistComponent = withAuthenticationConsumer((props: any) => {
   return (
     <div>
-      <EntityListComponent component={EntityCheckComponent} title="Things to finish" isCheckList={true} type={"integrityChecklist"} {...props} />
+      <EntityListComponent component={EntityCheckComponent} typeName="Checklist Item" title="Things to finish" isCheckList={true} type={"integrityChecklist"} {...props} />
     </div>
   );
   

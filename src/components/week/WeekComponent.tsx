@@ -4,6 +4,7 @@ import { store } from "../../firebase";
 import { Entity } from '../../types/Entity';
 import { WeekEntity } from '../../types/WeekEntity';
 import { dateAsISOString, timeZoneOffset } from '../../utils/date';
+import { PopupComponent } from "../popup";
 import "./Week.css";
 import { WeekEntityListComponent } from './WeekEntityListComponent';
 
@@ -20,6 +21,8 @@ const  WeekComponent = (props: any) => {
   const [weekEntity, setWeekEntity] = useState<WeekEntity>();
 
   const [selected, setSelected] = useState<Entity>();
+
+  const [popup, setPopup] = useState<any>();
 
   useEffect(() => {
     let mounted: boolean = true;
@@ -89,16 +92,29 @@ const  WeekComponent = (props: any) => {
   }
 
   const deleteCallback = (anEntity : Entity) => {
-    if(weekEntity) {
-      for(const compareEntity of weekEntity.entities) {
-        if(compareEntity.id === anEntity.id) {
-          weekEntity.entities.splice(weekEntity.entities.indexOf(compareEntity), 1);
+    setPopup({
+      cancelCallback: () => {
+        setPopup({});
+      },
+      cancelIcon: "clear",
+      confirmCallback: () => {
+        if(weekEntity) {
+          for(const compareEntity of weekEntity.entities) {
+            if(compareEntity.id === anEntity.id) {
+              weekEntity.entities.splice(weekEntity.entities.indexOf(compareEntity), 1);
+            }
+          }
+          const newDocument = {...weekEntity};
+          store.updateWeekEntity(type, weekEntity.week, newDocument, authUser.uid);
+          setWeekEntity(newDocument);
+          setPopup({});
         }
-      }
-      const newDocument = {...weekEntity};
-      store.updateWeekEntity(type, weekEntity.week, newDocument, authUser.uid);
-      setWeekEntity(newDocument);
-    }
+      },
+      confirmIcon: "delete",
+      message: "Do you want to delete " + anEntity.value + "?",
+      title: "Delete " + props.typeName,
+      visible: true,
+    });
   }
 
   const selectCallback = (anEntity: Entity) => {
@@ -107,12 +123,13 @@ const  WeekComponent = (props: any) => {
 
   return (
     weekDays != null ?
-      <div className="page">
+      <div className="page-week">
         {
             weekdays.map((key: string) => 
                <WeekEntityListComponent key={key} entities={entities[key]} date={weekDays.get(key)} weekday={key} selected={selected} selectCallback={selectCallback} saveCallback={saveCallback} deleteCallback={deleteCallback} />
             )
         }
+        <PopupComponent {...popup} />
       </div>
     : <div className="cssload-container">
         <div className="cssload-speeding-wheel"/>

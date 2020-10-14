@@ -75,8 +75,8 @@ const homeComponent = (props:any) => {
             <input type="radio" id="journal" name="type" value="journal"/>
             <label htmlFor="win">Journal</label>
           </div>
-          <div className="value">
-            <textarea ref={textareaRef} className="entityText" value={value} onChange={valueChanged} rows={6}/>
+          <div className="line">
+            <textarea ref={textareaRef} className="line-element" value={value} onChange={valueChanged} rows={6}/>
             <div className="actions">
               <button className="save-value" onClick={saveValue} disabled={value===""}>
                 <i className="material-icons md-dark value-button">save</i>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { PopupComponent } from "../components/popup";
 import * as routes from "../constants/routes";
 import { firebase } from "../firebase";
 import { withAuthentication } from "../firebase/withAuthentication";
@@ -43,6 +44,7 @@ class AppComponent extends React.Component {
             <Route exact={true} path={routes.CONTACTS} component={Contacts} />
             <Route exact={true} path={routes.SETTINGS} component={Settings} />
           </Switch>
+          <PopupComponent/>
         </div>
       </BrowserRouter>
     );

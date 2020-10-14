@@ -4,6 +4,6 @@ import { WeekComponent } from './../../components/week';
 
 export const  WinsWeek = withAuthenticationConsumer((props: any) => {
   return (
-      <WeekComponent type={"wins"} {...props} />
+      <WeekComponent typeName="Win" type={"wins"} {...props} />
   );
 });

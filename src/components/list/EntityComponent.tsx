@@ -8,11 +8,12 @@ export const  EntityComponent = (props: any) => {
   const selectCallback = props.selectCallback;
   const cancelCallback = props.cancelCallback;
   const [entity, setEntity] = useState<Entity>(props.entity);
-  const oldEntity = {...props.entity};
+  const [oldEntity, setOldEntity] = useState<Entity>({...props.entity});
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const editValue = () => {
+    setOldEntity({...entity});
     selectCallback(entity);
   }
   
