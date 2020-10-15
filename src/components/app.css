@@ -151,7 +151,6 @@ div.value-line {
 div.line-element, input.line-element, label.line-element, select.line-element, a.line-element {
   font-size: 14pt;
   align-self: center;
-  white-space: nowrap;
 }
 
 textarea.line-element {

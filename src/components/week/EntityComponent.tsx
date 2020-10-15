@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
+import ClampLines from 'react-clamp-lines';
 import { Entity } from '../../types/Entity';
 import "./Entity.css";
 
@@ -71,7 +72,7 @@ export const  EntityComponent = (props: any) => {
   } else {
     return (
       <div key={entity.id + "_div"} className="line">
-        <p key={entity.id + "_value"} className="entityText">{entity.value}</p>
+        <ClampLines key={entity.id + "_text"} id={entity.id + "_text"} lines={4} className="line-element" text={entity.value}/>
         <div key={entity.id + "_actions"} className="actions">
           <button key={entity.id + "_edit_button"} className="edit-value" onClick={editValue} disabled={props.selected}>
             <i key={entity.id + "_save_img"} className="material-icons md-dark value-button">create</i>

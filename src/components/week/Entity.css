@@ -11,6 +11,14 @@ textarea {
   border: 1px;
   border-style: solid;
   font-family: sans-serif;
-  font-size: large;
+  font-size: 14pt;
   resize: vertical;
+}
+
+.clamp-lines__button {
+  font-size: 10pt;
+  background: lightgray;
+  border: 0;
+  cursor: pointer;
+  padding: 5px;
 }
