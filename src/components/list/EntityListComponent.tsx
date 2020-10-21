@@ -133,7 +133,7 @@ export const EntityListComponent = (props: any) => {
 
   return (
     authUser ?
-      <div className="page">
+      <div className={props.className ? props.className : "page" } >
         <div className="list-header">
           {
             props.title ?
@@ -147,23 +147,23 @@ export const EntityListComponent = (props: any) => {
             </button>
           </div>
         </div>
-        <div className="page-content">
+        <div className={props.week ? "page-week-content" : "page-content"}>
           {
            entities ?
             selectedEntity ?
                 entities.map((element: Entity) => {
                   return(
-                      <Component 
+                      <Component {...props}
                         isSelected={selectedEntity && element && element.id === selectedEntity.id} selected={selectedEntity} key={element.id} entity={element} selectCallback={selectCallback} cancelCallback={cancelCallback} saveCallback={saveCallback} deleteCallback={deleteCallback} 
                       />
                   );
                 })
             : 
-            <ReactSortable list={entities} setList={setEntities} dragClass="drag-item" onEnd={dragEnd} chosenClass="drag-item" delay={250}>
+            <ReactSortable list={entities} setList={setEntities} dragClass="drag-item" onEnd={dragEnd} delay={250}>
               {
                 entities.map((element: Entity) => {
                   return(
-                      <Component 
+                      <Component {...props}
                         isSelected={selectedEntity && element && element.id === selectedEntity.id} selected={selectedEntity} key={element.id} entity={element} selectCallback={selectCallback} cancelCallback={cancelCallback} saveCallback={saveCallback} deleteCallback={deleteCallback} 
                       />
                   );

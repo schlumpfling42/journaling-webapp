@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ElementType, useEffect, useState } from "react";
 import { withWeekPagination } from "../../components/withWeekPagination";
 import { store } from "../../firebase";
 import { Entity } from '../../types/Entity';
@@ -13,6 +13,8 @@ const weekdays = [
 ];
 
 const  WeekComponent = (props: any) => {
+  const Component: ElementType<any> = props.component;
+  
   const [type] = useState<string>(props.type);
   const [weekDays, setWeekDays] = useState<Map<string,string>>();
   const [authUser] = useState(props.authUser);
@@ -126,7 +128,7 @@ const  WeekComponent = (props: any) => {
       <div className="page-week">
         {
             weekdays.map((key: string) => 
-               <WeekEntityListComponent key={key} entities={entities[key]} date={weekDays.get(key)} weekday={key} selected={selected} selectCallback={selectCallback} saveCallback={saveCallback} deleteCallback={deleteCallback} />
+               <WeekEntityListComponent component={Component} key={key} entities={entities[key]} date={weekDays.get(key)} weekday={key} selected={selected} selectCallback={selectCallback} saveCallback={saveCallback} deleteCallback={deleteCallback} />
             )
         }
         <PopupComponent {...popup} />
@@ -137,4 +139,4 @@ const  WeekComponent = (props: any) => {
   );
 }
 
-export const Component = withWeekPagination(WeekComponent);
+export const Week = withWeekPagination(WeekComponent);

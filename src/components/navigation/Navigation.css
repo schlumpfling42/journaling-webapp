@@ -26,8 +26,8 @@ div.nav-title {
 }
 
 div#content_tabs {
-  display: grid;
-  grid-template-columns:  max-content max-content max-content max-content max-content;
+  display: flex;
+  flex-direction: row;
   margin-top: 5px;
   border-left: 1px solid;
   border-top-left-radius: 10px;

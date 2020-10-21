@@ -18,21 +18,28 @@ div.page-week {
 }
 
 div.page {
-  display: block; 
+  display: flex;
+  flex-direction: column;
   margin-left: 10px;
   margin-right: 0px;
   margin-top: 10px;
-  overflow: visible;
+  overflow: hidden;
   position: fixed;
   top: 55px;
   right: 0px;
   left: 0px;
-  bottom: 75px;
+  bottom: 10px;
   overflow-inline: inherit;
 }
 div.page-content {
   overflow-y: scroll;
-  max-height: 100%;
+  bottom: 10px;
+  overscroll-behavior: contain;
+}
+
+div.page-week-content {
+  overflow-y: scroll;
+  bottom: 75px;
   overscroll-behavior: contain;
 }
 
@@ -170,15 +177,35 @@ input[type="text"].line-element {
 
 div.flex {
   display: inline-flex;
-  flex: row;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 10px;
   align-items: baseline;
 }
 
+div.flexNoGap {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+div.flexColumnRight {
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-self: center;
+  align-items: flex-end;
+  align-content: flex-end;
+}
+
+.flexGrow1 {
+  flex-grow: 1;
+}
+
 div.flex5 {
   display: inline-flex;
-  flex: row;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 5px;
   align-items: baseline;

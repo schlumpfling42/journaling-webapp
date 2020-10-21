@@ -4,7 +4,9 @@ import { PopupComponent } from "../components/popup";
 import * as routes from "../constants/routes";
 import { firebase } from "../firebase";
 import { withAuthentication } from "../firebase/withAuthentication";
+import { Anger } from "../pages/Anger";
 import { Contacts } from "../pages/Contacts";
+import { Habits } from "../pages/Habits";
 import { Home } from "../pages/Home";
 import { IntegrityChecklist } from "../pages/Integrity Checklist";
 import { Journal } from "../pages/Journal";
@@ -40,6 +42,8 @@ class AppComponent extends React.Component {
             <Route exact={true} path={routes.HOME} component={Home} />
             <Route exact={true} path={routes.WINS} component={Wins} />
             <Route exact={true} path={routes.JOURNAL} component={Journal} />
+            <Route exact={true} path={routes.ANGER} component={Anger} />
+            <Route exact={true} path={routes.HABITS} component={Habits} />
             <Route exact={true} path={routes.INTEGRITY} component={IntegrityChecklist} />
             <Route exact={true} path={routes.CONTACTS} component={Contacts} />
             <Route exact={true} path={routes.SETTINGS} component={Settings} />

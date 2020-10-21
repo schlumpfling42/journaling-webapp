@@ -28,6 +28,18 @@ const NavigationAuth = () => (
             <div>Journal</div>
           </div>
         </NavLink>
+        <NavLink activeClassName="activLink" to={routes.ANGER}>
+          <div className="nav-title">
+            <i className="material-icons md-dark nav-button">record_voice_over</i>
+            <div>Anger</div>
+          </div>
+        </NavLink>
+        <NavLink activeClassName="activLink" to={routes.HABITS}>
+          <div className="nav-title">
+            <i className="material-icons md-dark nav-button">pending_actions</i>
+            <div>Habits</div>
+          </div>
+        </NavLink>
         <NavLink activeClassName="activLink" to={routes.INTEGRITY}>
           <div className="nav-title">
             <i className="material-icons md-dark nav-button">check_circle</i>

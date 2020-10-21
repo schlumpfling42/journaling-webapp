@@ -137,7 +137,7 @@ const settingsComponent = (props: any) => {
   }
 
   return (
-    <PinComponent authUser={props.authUser}>
+    <PinComponent name="Settings" authUser={props.authUser}>
       <div className="page">
         <h2>Settings</h2>
         <div className="settings">

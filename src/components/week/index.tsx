@@ -1,4 +1,4 @@
 
-import { Component } from "./WeekComponent";
+import { Week } from "./WeekComponent";
 
-export const WeekComponent = Component;
+export const WeekComponent = Week;

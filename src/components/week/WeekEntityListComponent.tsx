@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { ElementType, useState } from 'react';
 import { Entity } from '../../types/Entity';
 import { getISOStringAsLocalDate } from '../../utils/date';
-import { EntityComponent } from './EntityComponent';
 import "./EntityList.css";
 
 export const WeekEntityListComponent = (props: any) => {
-
+  const Component: ElementType<any> = props.component;
+  
   const [adding, setAdding] = useState(false);
   const date = getISOStringAsLocalDate(props.date);
 
@@ -48,7 +48,7 @@ export const WeekEntityListComponent = (props: any) => {
         {
           props.entities ?
           props.entities.map((element: Entity) => {
-            return <EntityComponent isSelected={props.selected && element && element.id === props.selected.id} selected={props.selected} key={element.id} entity={element} selectCallback={selectCallback} saveCallback={saveCallback} cancelCallback={cancelCallback} deleteCallback={props.deleteCallback} />
+            return <Component isSelected={props.selected && element && element.id === props.selected.id} selected={props.selected} key={element.id} entity={element} selectCallback={selectCallback} saveCallback={saveCallback} cancelCallback={cancelCallback} deleteCallback={props.deleteCallback} />
           })
           : null
         }

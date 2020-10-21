@@ -67,7 +67,7 @@ export const Component = (props: any) => {
     } else if(hasPin === true && (pinEntered === undefined || pinEntered === false)) {
         return(
             <div className="pin">      
-            <p>Enter PIN to access Journal</p>
+            <p>Enter PIN to access {props.name}</p>
             <input ref={pinRef} type="password" autoComplete="off" minLength={4} maxLength={8} size={8}  onChange={valueChanged}/>
           </div>
         )
