@@ -74,6 +74,8 @@ const homeComponent = (props:any) => {
             <label htmlFor="win">Win</label>
             <input type="radio" id="journal" name="type" value="journal"/>
             <label htmlFor="win">Journal</label>
+            <input type="radio" id="anger" name="type" value="anger"/>
+            <label htmlFor="win">Anger</label>
           </div>
           <div className="line">
             <textarea ref={textareaRef} className="line-element" value={value} onChange={valueChanged} rows={6}/>

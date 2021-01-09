@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { PinComponent } from 'src/components/pin';
+import { store } from '../../firebase';
+
 import { getSettings, updateSettings } from '../../firebase/store';
 import { withAuthenticationConsumer } from "../../firebase/withAuthenticationConsumer";
-import { formatYYYYMMDD } from '../../utils/date';
+import { formatYYYYMMDD, getWeeksSince } from '../../utils/date';
 
 import "./settings.css";
 
 const settingsComponent = (props: any) => {
 
   const [settings, setSettings] = useState<any>(null);
+  const [startDateFromSettings, setStartDateFromSettings] = useState<Date>(new Date());
   const [startDate, setStartDate] = useState<string>("");
   const [hasPin, setHasPin] = useState<boolean>();
   const [changePin, setChangePin] = useState<boolean>(false);
@@ -16,6 +19,9 @@ const settingsComponent = (props: any) => {
   const [newPin, setNewPin] = useState<string>("");
   const [newPinConfirm, setNewPinConfirm] = useState<string>("");
   const [pinConfirmMatch, setPinConfirmMatch] = useState<boolean>(false);
+  const [exportJournal, setExportJournal] = useState<boolean>(false);
+  const [exportAnger, setExportAnger] = useState<boolean>(false);
+  const [exportWins, setExportWins] = useState<boolean>(false);
 
   const [authUser] = useState(props.authUser);
   // const [accessToken] = useState(props.fbAccessToken);
@@ -36,9 +42,10 @@ const settingsComponent = (props: any) => {
         if(doc != null && doc.data()) {
           const data: any = doc.data();
           setSettings(data);
-          const startDateFromSettings: string = data.startDate;
-          if(startDateFromSettings) {
-            setStartDate(formatYYYYMMDD(startDateFromSettings));
+          const startDateStringFromSettings: string = data.startDate;
+          if(startDateStringFromSettings) {
+            setStartDateFromSettings(new Date(startDateStringFromSettings));
+            setStartDate(formatYYYYMMDD(startDateStringFromSettings));
           }
           const pinFromSettings: string = data.pin;
           if(pinFromSettings) {
@@ -136,6 +143,74 @@ const settingsComponent = (props: any) => {
     setChangePin(false);
   }
 
+  const checked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if(event.target.id === "journal") {
+      setExportJournal(event.target.checked);
+    }
+    if(event.target.id === "anger") {
+      setExportAnger(event.target.checked);
+    }
+    if(event.target.id === "wins") {
+      setExportWins(event.target.checked);
+    }
+  }
+
+  const exportData = async () => {
+    let exportDataString = "";
+    if(authUser) {
+      const newWeeks = getWeeksSince(startDateFromSettings);
+      if(exportWins && exportWins === true) {
+        setExportWins(false);
+        exportDataString += "Wins\n";
+        for(const aWeek of newWeeks) {
+          await store.entities("wins", aWeek.firstDayOfTheWeekString, authUser.uid).then(doc => {
+            if(doc != null && doc.data()) {
+              const data: any =  doc.data();
+              for(const anEntity of data.entities) {
+                exportDataString += new Date(anEntity.date).toLocaleDateString() + ": " + anEntity.value + "\n";
+              }
+            }
+          });
+        }
+      }
+      if(exportJournal && exportJournal === true) {
+        setExportJournal(false);
+        exportDataString += "Journal Entries:\n";
+        for(const aWeek of newWeeks) {
+          await store.entities("journal", aWeek.firstDayOfTheWeekString, authUser.uid).then(doc => {
+            if(doc != null && doc.data()) {
+              const data: any =  doc.data();
+              for(const anEntity of data.entities) {
+                exportDataString += new Date(anEntity.date).toLocaleDateString() + ": " + anEntity.value + "\n";
+              }
+            }
+          });
+        }
+      }
+      if(exportAnger && exportAnger === true) {
+        setExportAnger(false);
+        exportDataString += "Anger Journal Entries:\n";
+        for(const aWeek of newWeeks) {
+          await store.entities("anger", aWeek.firstDayOfTheWeekString, authUser.uid).then(doc => {
+            if(doc != null && doc.data()) {
+              const data: any =  doc.data();
+              for(const anEntity of data.entities) {
+                exportDataString += new Date(anEntity.date).toLocaleDateString() + ": " + anEntity.value + "\n";
+              }
+            }
+          });
+        }
+      }
+
+      const element = document.createElement("a");
+      const file = new Blob([exportDataString], {type: 'text/plain'});
+      element.href = URL.createObjectURL(file);
+      element.download = "wins-and-journal-export.txt";
+      document.body.appendChild(element); // Required for this to work in FireFox
+      element.click();
+    }
+  }
+
   return (
     <PinComponent name="Settings" authUser={props.authUser}>
       <div className="page">
@@ -179,6 +254,19 @@ const settingsComponent = (props: any) => {
               </div>
             </div>
           }
+        </div>
+        <div className="settings">
+          <h3 className="settingName">Export</h3>
+          <div>
+          <input id="wins" type="checkbox" className="line-element" checked={exportWins} onChange={checked}/><label>Wins</label>
+          <input id="journal" type="checkbox" className="line-element" checked={exportJournal} onChange={checked}/><label>Journal</label>
+          <input id="anger" type="checkbox" className="line-element" checked={exportAnger} onChange={checked}/><label>Anger</label>
+          </div>
+          <div className="actions">
+            <button className="export-value" onClick={exportData} disabled={!(exportAnger || exportJournal || exportWins)}>
+              <i className="material-icons md-dark value-button">download</i>
+            </button>
+          </div>
         </div>
       </div>
     </PinComponent>
