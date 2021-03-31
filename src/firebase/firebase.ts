@@ -1,17 +1,18 @@
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const config = {
-  apiKey: process.env.REACT_APP_firebase_apiKey,
-  appId: process.env.REACT_APP_firebase_appId,
-  authDomain: process.env.REACT_APP_firebase_authDomain,
-  databaseURL: process.env.REACT_APP_firebase_databaseURL,
-  measurementId: process.env.REACT_APP_firebase_measurementId,
-  messagingSenderId: process.env.REACT_APP_firebase_messagingSenderId,
-  projectId: process.env.REACT_APP_firebase_projectId,
-  storageBucket: process.env.REACT_APP_firebase_storageBucket,
+  apiKey: __myapp.env.apiKey,
+  appId: __myapp.env.appId,
+  authDomain: __myapp.env.authDomain,
+  databaseURL: __myapp.env.databaseURL,
+  measurementId: __myapp.env.measurementId,
+  messagingSenderId: __myapp.env.messagingSenderId,
+  projectId: __myapp.env.projectId,
+  storageBucket: __myapp.env.storageBucket,
 };
 
 if (!firebase.apps.length) {
@@ -19,8 +20,8 @@ if (!firebase.apps.length) {
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 }
 
-export const authProvider = new firebase.auth.FacebookAuthProvider();
-// export const authProvider = new firebase.auth.GoogleAuthProvider();
+//export const authProvider = new firebase.auth.FacebookAuthProvider();
+export const authProvider = new firebase.auth.GoogleAuthProvider();
 // authProvider.addScope("groups_show_list");
 export const auth = firebase.auth();
 export const store = firebase.firestore();

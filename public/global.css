@@ -1,0 +1,136 @@
+@media (min-width: 800px) {
+  button.image60 {
+      height: 60px;
+      width: 60px;
+      outline: none;
+      background-color: transparent;
+      border: none;
+  }
+  button.image40 {
+    height: 40px;
+    width: 40px;
+    outline: none;
+    background-color: transparent;
+    border: none;
+  }
+  button.image80 {
+      height: 80px;
+      width: 80px;
+      outline: none;
+      background-color: transparent;
+      border: none;
+  }
+  li.pageItem {
+    height: 80px;
+    width: 80px;
+  }
+  button:hover .tooltip-text {
+    bottom: -15px;
+  }
+}
+@media (max-width: 800px) {
+  .image60 {
+      height: 40px;
+      width: 40px;
+      outline: none;
+      background-color: transparent;
+      border: none;
+  }
+  .image40 {
+    height: 40px;
+    width: 40px;
+    outline: none;
+    background-color: transparent;
+    border: none;
+  }
+  .image80 {
+      height: 50px;
+      width: 50px;
+      outline: none;
+      background-color: transparent;
+      border: none;
+  }
+  h3 {
+    font-size: x-large;
+  }
+  h4, .list-group h3 {
+    font-size: large;
+  }
+  button:hover .tooltip-text {
+    bottom: -15px;
+  }
+}
+
+button:hover .tooltip-text {
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  background-color: rgba(25, 25, 140, 0.7);
+  color: whitesmoke;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+  
+button.image80:focus, button.image60:focus {
+  outline: none;
+}
+
+button .tooltip-text {
+  display: none;
+}
+
+nav.pagination {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+}
+ul.pagination {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+button {
+  position: relative;
+}
+
+.modal-title {
+  width: 100%;
+}
+
+.modal-header {
+  padding: 0.5rem !important;
+}
+
+div.card-deck {
+  display: block;
+}
+
+.card-deck .card {
+  margin-bottom: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+.card-deck {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+
+}
+
+img {
+  width: 100%;
+}

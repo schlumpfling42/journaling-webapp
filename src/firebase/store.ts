@@ -1,4 +1,4 @@
-import { ListEntity } from "src/types/ListEntity";
+import { ListEntity } from "../types/ListEntity";
 import { WeekEntity } from "../types/WeekEntity";
 import { store } from "./firebase";
 

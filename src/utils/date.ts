@@ -37,6 +37,10 @@ export function getISOStringToDisplayString(date: string) {
   return new Intl.DateTimeFormat('en', { month: '2-digit', day: '2-digit' }).format(getISOStringAsLocalDate(date));
 }
 
+export function dateToDisplayString(date: Date) {
+  return new Intl.DateTimeFormat('en', { month: '2-digit', day: '2-digit' }).format(date);
+}
+
 export function formatYYYYMMDD(dateString: string) {
   const date = new Date(dateString);
   return date.toISOString().split('T')[0];
