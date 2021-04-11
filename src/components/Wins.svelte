@@ -122,6 +122,7 @@ function remove(event, entry, winsRecord) {
 function add() {
   selectedWinsRecord = currentWinsRecord;
   selectedEntry = { value: "", date: dateAsISOString(new Date())};
+  deSelect();
 }
 
 function save(updatedValue) {
@@ -140,7 +141,7 @@ function save(updatedValue) {
 }
 
 </script>
-<div class="page main" transition:slide="{{delay: 250, duration: 300, easing: quintOut}}">
+<div class="page main" transition:slide="{{slide: 350, duration: 300, easing: quintOut}}">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="/images/win.png" alt="Wins"/>
@@ -148,12 +149,12 @@ function save(updatedValue) {
     <button class="add image60" on:click={() => add()}><img src="/images/add.png" alt="Add" /><span class="tooltip-text">Add</span></button>
   </div>
   <div class="content">
-    {#each winWeeks as week, weekIndex}
     <CardDeck>
+    {#each winWeeks as week, weekIndex}
       {#if winsRecordsByWeek[weekIndex]}
         {#each winsByDay(winsRecordsByWeek[weekIndex]) as wins, winIndex}
           {#if wins && wins.length > 0}
-          <Card>
+          <div class="card">
             <CardHeader class="dayHeader">
               {weekdays[winIndex]} {dateToDisplayString(dayOfTheWeek(week, 6-winIndex))}
             </CardHeader>
@@ -171,12 +172,12 @@ function save(updatedValue) {
               {/each}
               </ListGroup>
             </CardText>
-          </Card>
+          </div>
           {/if}
         {/each}
       {/if}
+      {/each} 
     </CardDeck>
-    {/each} 
   </div>
   <Modal transitionOptions isOpen={selectedEntry} size="lg">
     <ModalHeader>
@@ -227,6 +228,13 @@ div.content {
   overflow-y: auto;
   bottom: 10px;
   border: 1px solid lightgray;
+}
+
+div.card {
+  margin-top: 15px !important;
+}
+div.card:first-of-type {
+  margin-top: 0px !important;
 }
 
 div.alignLeft {

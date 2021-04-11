@@ -51,4 +51,5 @@ export const updateEntity = (type: string, entity: ListEntity, userId: string) =
     store.collection(type).doc(userId).set(data);
 }
 
-export const onSnapshot = (collection, week, userId, callback) => store.collection(collection).doc(week + "_" + userId).onSnapshot(callback);
+export const onWeekSnapshot = (collection, week, userId, callback) => store.collection(collection).doc(week + "_" + userId).onSnapshot(callback);
+export const onSnapshot = (collection, userId, callback) => store.collection(collection).doc( userId).onSnapshot(callback);

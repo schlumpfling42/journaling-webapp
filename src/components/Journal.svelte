@@ -124,6 +124,7 @@ function add() {
   editedValue = null;
   selectedJournalRecord = currentJournalRecord;
   selectedEntry = { value: "", date: dateAsISOString(new Date())};
+  deSelect();
 }
 
 function save(updatedValue) {
@@ -142,7 +143,7 @@ function save(updatedValue) {
 }
 
 </script>
-<div class="page main" transition:slide="{{delay: 250, duration: 300, easing: quintOut}}">
+<div class="page main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="{image}" alt="{name}"/>
@@ -150,18 +151,18 @@ function save(updatedValue) {
     <button class="add image60" on:click={() => add()}><img src="/images/add.png" alt="Add" /><span class="tooltip-text">Add</span></button>
   </div>
   <div class="content">
-    {#each allWeeks as week, weekIndex}
     <CardDeck class="roll">
+      {#each allWeeks as week, weekIndex}
       {#if journalRecordsByWeek[weekIndex] && journalByDay(journalRecordsByWeek[weekIndex])}
         {#each journalByDay(journalRecordsByWeek[weekIndex]) as journalEntries, journalIndex}
-          {#if journalEntries}
-            {#each journalEntries as journal}
-              {#if journal}
-              <Card class="mb-12">
-                <CardHeader class="dayHeader">
-                  {getDateString(week, weekIndex, journalIndex)}
-                </CardHeader>
-                <CardText>
+          {#if journalEntries && journalEntries.length >0}
+          <div class="card mb-12">
+            <CardHeader class="dayHeader">
+              {getDateString(week, weekIndex, journalIndex)}
+            </CardHeader>
+            <CardText>
+              {#each journalEntries as journal}
+                {#if journal}
                   <ListGroup>
                     <li class="list-group-item" on:click={select}>
                       <div class="selectedElement alignLeft shortened">
@@ -172,15 +173,15 @@ function save(updatedValue) {
                       </div>
                     </li>
                   </ListGroup>
-                </CardText>
-              </Card>
-              {/if}
-            {/each}
+                  {/if}
+                {/each}
+              </CardText>
+            </div>
           {/if}
         {/each}
       {/if}
+      {/each} 
     </CardDeck>
-    {/each} 
   </div>
   <Modal transitionOptions isOpen={selectedEntry} size="lg">
     <ModalHeader>
@@ -224,13 +225,10 @@ div.header {
 
 div.content {
   height: 100%;
-  overflow: hidden;
-}
-
-.cardContent {
-  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+  bottom: 10px;
+  border: 1px solid lightgray;
 }
 
 div.alignLeft {
@@ -273,6 +271,13 @@ div.shortened div button {
 
 div.shortened div.selectedElementActions {
   display: none;
+}
+
+div.card {
+  margin-top: 15px !important;
+}
+div.card:first-of-type {
+  margin-top: 0px !important;
 }
 
 @media (min-width: 800px) {

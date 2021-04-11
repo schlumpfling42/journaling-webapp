@@ -2,6 +2,8 @@
 import createRouter from '@spaceavocado/svelte-router';
 import RouterView from '@spaceavocado/svelte-router/component/view';
 import Contacts from './components/Contacts.svelte';
+import Habits from './components/Habits.svelte';
+import IntegrityList from './components/IntegrityList.svelte';
 import Journal from './components/Journal.svelte';
 import Main from "./components/Main.svelte";
 import Settings from './components/Settings.svelte';
@@ -46,6 +48,16 @@ import Wins from './components/Wins.svelte';
 							key: "anger",
 							image: "/images/anger.png"
 						}
+					},
+					{
+						path: '/integrity',
+						name: 'Integrity',
+						component: IntegrityList
+					},
+					{
+						path: '/habits',
+						name: 'Habits',
+						component: Habits
 					},
 					{
 						path: '/contacts',

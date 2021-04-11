@@ -1,9 +1,9 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
-import { loggedInUser, onSnapshot } from '../utils/store';
+import { loggedInUser, onSnapshot, onWeekSnapshot } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
-import { getWeek } from '../utils/date';
+import { getISOStringAsLocalDate, getWeek } from '../utils/date';
 
 let user;
 let currentWeek = getWeek(new Date(Date.now()), []);
@@ -18,14 +18,33 @@ loggedInUser.subscribe(aUser => {
   if(aUser != null) {
     user = aUser.user;
     
-    onSnapshot("wins", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
+    onWeekSnapshot("wins", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
       if(recordDocument.exists) {
         wins = recordDocument.data().entities.length
       }
     });
-    onSnapshot("journal", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
+    
+    onWeekSnapshot("journal", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
       if(recordDocument.exists) {
         journalEntries = recordDocument.data().entities.length
+      }
+    });
+    onWeekSnapshot("anger", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
+      if(recordDocument.exists) {
+        angerJournalEntries = recordDocument.data().entities.length
+      }
+    });
+
+    onSnapshot("integrityChecklist", user.uid, (recordDocument) =>  {
+      let integrityRecord = recordDocument?.data();
+      if(integrityRecord && integrityRecord.entities) {
+        integrityChecks = integrityRecord.entities.filter(anEntity => getISOStringAsLocalDate(anEntity.finishedDate).getTime() > currentWeek.firstDayOfTheWeek.getTime()).length;
+      }
+    });
+    onSnapshot("habits", user.uid, (recordDocument) =>  {
+      let habitsRecord = recordDocument?.data();
+      if(habitsRecord && habitsRecord.entities) {
+        habits = habitsRecord.entities.filter(anEntity => anEntity.checkValues && Object.keys(anEntity.checkValues).length > 0).length;
       }
     });
   }
@@ -36,20 +55,32 @@ function navigateTo(name) {
 }
 
 </script>
-<div class="main" transition:slide="{{delay: 250, duration: 300, easing: quintOut}}">
-  <h3>How is it going {user?.displayName}?</h3>
+<div class="main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
+  <h3>How is it going<br/>{user?.displayName}?</h3>
   <button class="zero clock" on:click={()=> navigateTo("Wins")}><img src="/images/win.png" alt="Wins"/><span class="tooltip-text">Wins</span></button> 
   <button class="ten clock" on:click={()=> navigateTo("Journal")}><img src="/images/journal.png" alt="Journal"/><span class="tooltip-text">Journal</span></button>
   <button class="eight clock" on:click={()=> navigateTo("Anger")}><img src="/images/anger.png" alt="Anger"/><span class="tooltip-text">Anger</span></button> 
-  <button class="six clock"><img src="/images/integrity-check.png" alt="Integrity Checklist"/><span class="tooltip-text">Integrity Checklist</span></button>
-  <button class="four clock"><img src="/images/habit.png" alt="Habits"/><span class="tooltip-text">Habits</span></button>
-  <button class="two clock" on:click={()=> navigateTo("Contacts")}><img src="/images/contact.png" alt="Contacts"/><span class="tooltip-text">Contacts</span></button>
+  <button class="six clock" on:click={()=> navigateTo("Integrity")}><img src="/images/integritylist.png" alt="Integrity List"/><span class="tooltip-text">Integrity List</span></button>
+  <button class="four clock" on:click={()=> navigateTo("Habits")}><img src="/images/habit.png" alt="Habits"/><span class="tooltip-text">Habits</span></button>
+  <button class="two clock" on:click={()=> navigateTo("Contacts")}><img src="/images/contacts.png" alt="Contacts"/><span class="tooltip-text">Contacts</span></button>
   <div class="centerInCircle">
     <h3>This week</h3>
     <h4>You have {wins} {wins == 1 ? "Win" : "Wins"}</h4>
     <h4>You journaled {journalEntries + angerJournalEntries} times</h4>
+    {#if integrityChecks == 0}
+    <h4>You not checked off any integrity items</h4>
+    {:else if integrityChecks == 1}
+    <h4>You checked off 1 integrity item</h4>
+    {:else}
     <h4>You checked off {integrityChecks} integrity items</h4>
+    {/if}
+    {#if habits == 0}
+    <h4>You are not working on habits</h4>
+    {:else if habits == 1}
+    <h4>You are working on 1 habit</h4>
+    {:else}
     <h4>You are working on {habits} habits</h4>
+    {/if}
   </div>
   <button class="settings image60" on:click={()=> navigateTo("Settings")}><img src="/images/setting.png" alt="Settings" /><span class="tooltip-text">Settings</span></button>
 </div>

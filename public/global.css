@@ -27,6 +27,17 @@
   button:hover .tooltip-text {
     bottom: -15px;
   }
+  button.image40:hover .tooltip-text {
+    width: max-content;
+    height: fit-content;
+    top: 40px;
+  }
+
+  button.image60:hover .tooltip-text {
+    width: max-content;
+    height: fit-content;
+    top: 60px;
+  }
 }
 @media (max-width: 800px) {
   .image60 {
@@ -58,6 +69,11 @@
   }
   button:hover .tooltip-text {
     bottom: -15px;
+  } 
+  button.image40:hover .tooltip-text, button.image60:hover .tooltip-text {
+    width: max-content;
+    height: fit-content;
+    top: 40px;
   }
 }
 
@@ -101,7 +117,7 @@ ul.pagination {
 
 html, body {
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 button {
@@ -132,5 +148,11 @@ div.card-deck {
 }
 
 img {
+  max-height: 150px;
+  max-width: 150px;
   width: 100%;
+}
+
+button:focus {
+  outline-style: none !important;
 }

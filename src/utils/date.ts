@@ -25,8 +25,16 @@ export function dateAsISOString(date: Date) {
   return getUTCDayAsLocalDate(date).toISOString();
 }
 
+export function dateTimeAsISOString(date: Date) {
+  return getUTCDateTimeAsLocalDateTime(date).toISOString();
+}
+
 export function getUTCDayAsLocalDate(date: Date) {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+}
+
+export function getUTCDateTimeAsLocalDateTime(date: Date) {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()));
 }
 
 export function getISOStringAsLocalDate(date: string) {
@@ -84,6 +92,11 @@ export function getWeek(date: Date, weeks: Week[]) {
 export function dayOfTheWeek(selectedWeek: Week, day: number) {
   const datePlusDays = new Date(selectedWeek.firstDayOfTheWeek.getTime() + (day*24*60*60*1000));
   return datePlusDays;
+}
+
+export function dayOfTheWeekAsISOString(selectedWeek: Week, day: number) {
+  const datePlusDays = new Date(selectedWeek.firstDayOfTheWeek.getTime() + (day*24*60*60*1000));
+  return dateAsISOString(datePlusDays);
 }
 
 function _getWeeksSince(date: Date, weeks: Week[]) {
