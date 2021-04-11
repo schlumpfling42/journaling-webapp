@@ -1,6 +1,5 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
-import { quintOut } from 'svelte/easing';
 import { loggedInUser, onSnapshot, onWeekSnapshot } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { getISOStringAsLocalDate, getWeek } from '../utils/date';
@@ -37,8 +36,8 @@ loggedInUser.subscribe(aUser => {
 
     onSnapshot("integrityChecklist", user.uid, (recordDocument) =>  {
       let integrityRecord = recordDocument?.data();
-      if(integrityRecord && integrityRecord.entities) {
-        integrityChecks = integrityRecord.entities.filter(anEntity => getISOStringAsLocalDate(anEntity.finishedDate).getTime() > currentWeek.firstDayOfTheWeek.getTime()).length;
+      if(integrityRecord && integrityRecord.finishedEntities) {
+        integrityChecks = integrityRecord.finishedEntities.filter(anEntity => getISOStringAsLocalDate(anEntity.finishedDate).getTime() > currentWeek.firstDayOfTheWeek.getTime()).length;
       }
     });
     onSnapshot("habits", user.uid, (recordDocument) =>  {
@@ -55,7 +54,7 @@ function navigateTo(name) {
 }
 
 </script>
-<div class="main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
+<div class="main" transition:slide="{{duration: 300}}">
   <h3>How is it going<br/>{user?.displayName}?</h3>
   <button class="zero clock" on:click={()=> navigateTo("Wins")}><img src="/images/win.png" alt="Wins"/><span class="tooltip-text">Wins</span></button> 
   <button class="ten clock" on:click={()=> navigateTo("Journal")}><img src="/images/journal.png" alt="Journal"/><span class="tooltip-text">Journal</span></button>

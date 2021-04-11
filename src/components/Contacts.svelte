@@ -1,12 +1,11 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
-import {flip} from "svelte/animate";
 import { quintOut } from 'svelte/easing';
-import { Button, Card, CardDeck, CardHeader, CardText, Col, Container, ListGroup, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "sveltestrap";
+import { Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "sveltestrap";
 import { loggedInUser, settings, updateEntity } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
-import { getWeek, getWeeksSince, getISOStringAsLocalDate, dayOfTheWeek, dateAsISOString, dateToDisplayString } from "../utils/date";
-import { entity, updateWeekEntity } from "../utils/store";
+import { dateAsISOString} from "../utils/date";
+import { entity } from "../utils/store";
 import {dndzone} from "svelte-dnd-action";
 
 let user;
@@ -273,7 +272,7 @@ const flipDurationMs = 300;
 $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChangeNumber || (type && type.length > 0) && (number && number.length > 0));
 
 </script>
-<div class="page main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
+<div class="page main" transition:slide="{{duration: 300, easing: quintOut}}">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="/images/contacts.png" alt="Contacts"/>
@@ -437,11 +436,11 @@ div.content:focus {
 }
 
 div.card-deck {
-outline: none;
+outline: none !important;
 }
 
 div.card-deck:focus {
-  outline: none;
+  outline: none !important;
 }
 
 label.alignLeft {

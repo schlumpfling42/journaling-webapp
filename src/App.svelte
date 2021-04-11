@@ -81,9 +81,9 @@ import Wins from './components/Wins.svelte';
 </main>
 
 <style>
-	main {
-		height: 100vh;
-		text-align: center;
-		margin: 0 auto;
-	}
+main {
+	height: 100vh;
+	text-align: center;
+	margin: 0 auto;
+}
 </style>

@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import RouterView from '@spaceavocado/svelte-router/component/view';
-  import { router } from '@spaceavocado/svelte-router';
   import { auth, authProvider } from "../firebase/firebase";
   import { loggedInUser } from '../utils/store';
 

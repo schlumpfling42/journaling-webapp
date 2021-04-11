@@ -1,7 +1,7 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
-import { Button, Card, CardDeck, CardHeader, CardText, ListGroup, Modal, ModalBody, ModalFooter, ModalHeader} from "sveltestrap";
+import { Button, CardDeck, CardHeader, CardText, ListGroup, Modal, ModalBody, ModalFooter, ModalHeader} from "sveltestrap";
 import { loggedInUser, settings } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { getWeek, getWeeksSince, getISOStringAsLocalDate, dayOfTheWeek, dateAsISOString, dateToDisplayString } from "../utils/date";

@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "wins-and-journal-testing"
+    "default": "wins-and-journal-281205"
+  },
+  "targets": {
+    "wins-and-journal-281205": {
+      "hosting": {
+        "app": [
+          "wins-and-journal"
+        ]
+      }
+    }
   }
 }

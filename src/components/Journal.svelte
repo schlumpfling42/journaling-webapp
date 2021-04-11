@@ -1,9 +1,9 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
-import { Button, Card, CardColumns, CardDeck, CardGroup, CardHeader, CardText, Col, Container, Input, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "sveltestrap";
+import { Button, CardDeck, CardHeader, CardText, ListGroup, Modal, ModalBody, ModalFooter, ModalHeader } from "sveltestrap";
 import { router } from '@spaceavocado/svelte-router';
-import { getWeek, getWeeksSince, getISOStringToDisplayString, getISOStringAsLocalDate, dayOfTheWeek, dateAsISOString, getUTCDayAsLocalDate, dateToDisplayString } from "../utils/date";
+import { getWeek, getWeeksSince, getISOStringAsLocalDate, dayOfTheWeek, dateAsISOString, dateToDisplayString } from "../utils/date";
 import { weekEntity, loggedInUser, settings, updateWeekEntity } from "../utils/store";
 import PinModal from './PinModal.svelte';
 
@@ -32,8 +32,6 @@ let journalRecordsByWeek = [];
 let currentJournalRecord;
 
 $: allWeeks = $settings ? getWeeksSince(getISOStringAsLocalDate($settings.startDate)).reverse() : [];
-
-$: if(allWeeks) update();
 
 function update() {
   if(allWeeks) {
@@ -73,8 +71,6 @@ function journalByDay(journal) {
   }
   return journalByDay.reverse();
 }
-
-update();
 
 function getDateString(week, weekIndex, journalIndex) {
   let day = weekdays[journalIndex] + " " + dateToDisplayString(dayOfTheWeek(week, 6- journalIndex));
@@ -143,7 +139,7 @@ function save(updatedValue) {
 }
 
 </script>
-<div class="page main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
+<div class="page main" transition:slide="{{duration: 500, easing: quintOut}}">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="{image}" alt="{name}"/>

@@ -62,7 +62,7 @@ $: pinChanged = (pin == "" ? null : pin) != $settings?.pin;
 $: changed = pinChanged || (startDate != $settings?.startDate?.substring(0,10));
 
 </script>
-<div class="page main" transition:slide="{{delay: 350, duration: 300, easing: quintOut}}">
+<div class="page main" transition:slide="{{duration: 300, easing: quintOut}}">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="/images/setting.png" alt="Wins"/>

@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "wins-and-journal",
     "public": "public/build",
     "ignore": [
       "firebase.json",

@@ -20,8 +20,8 @@ if (!firebase.apps.length) {
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 }
 
-//export const authProvider = new firebase.auth.FacebookAuthProvider();
-export const authProvider = new firebase.auth.GoogleAuthProvider();
+export const authProvider = new firebase.auth.FacebookAuthProvider();
+//export const authProvider = new firebase.auth.GoogleAuthProvider();
 // authProvider.addScope("groups_show_list");
 export const auth = firebase.auth();
 export const store = firebase.firestore();
