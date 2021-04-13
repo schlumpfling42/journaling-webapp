@@ -31,9 +31,10 @@ const weekdays = [
 let journalRecordsByWeek = [];
 let currentJournalRecord;
 
-$: allWeeks = $settings ? getWeeksSince(getISOStringAsLocalDate($settings.startDate)).reverse() : [];
+let allWeeks = [];
 
 function update() {
+  allWeeks = getWeeksSince(getISOStringAsLocalDate($settings.startDate)).reverse();
   if(allWeeks) {
     journalRecordsByWeek = [];
     for(const weekIndex in allWeeks) {

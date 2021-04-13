@@ -118,6 +118,8 @@ ul.pagination {
 html, body {
   height: 100%;
   overflow-x: hidden;
+  overflow: auto;
+  overscroll-behavior: auto;
 }
 
 button {

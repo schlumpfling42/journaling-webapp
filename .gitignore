@@ -212,4 +212,4 @@ typings/
 
 # Private
 .idea
-.firebase/hosting.YnVpbGQ.cache
+.firebase/*.*

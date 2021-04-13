@@ -43,6 +43,21 @@ function update() {
                 counter++;
               }
             });
+          } else {
+            let contactNumber : any = {
+              id: counter,
+              value: contact.value,
+              type: contact.type,
+              number: contact.number
+            };
+            if(contact.password) {
+              contactNumber.password = contact.password;
+            }
+            contact.contactNumbers = [contactNumber];
+            counter++;
+            delete contact.number;
+            delete contact.type;
+            delete contact.password; 
           }
         });
       } else {
@@ -55,8 +70,6 @@ function update() {
 }
 
 update();
-
-let passwordElement;
 
 let selectedEntry;
 let selectedContact;
@@ -230,11 +243,14 @@ function save() {
   password = null;
 }
 
-function copyPassword(password) {
-  passwordElement.value = password;
-  passwordElement.select();
-  document.execCommand('copy');
-  passwordElement.value = null;
+function copyPassword(number, password) {
+  window.focus();
+  navigator.clipboard.writeText(password).then(function() {
+    window.open("https://zoom.us/j/"+number);
+  }, function(error) {
+    console.error("unable to write to clipboard. Error:");
+    console.log(error);
+  });
 }
 
 function validatePhoneNumber(e, element) {
@@ -281,7 +297,6 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
   </div>
   <div class="content">
     {#if contactRecord}
-    <input hidden bind:this={passwordElement}/>
     <div use:dndzone={{items: contacts, flipDurationMs, dropFromOthersDisabled: true}} on:consider="{handleContactsDndConsider}" on:finalize="{handleContactsDndFinalize}" class="card-deck">
       {#each contacts as contact(contact.id)}
       <div class="card contactCard" on:click={select}>
@@ -293,7 +308,6 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
             <button class="image40" on:click={(event)=> addNumber(event, contact)}><img src="/images/add.png" alt="Add" /><span class="tooltip-text">Add<br/>number</span></button>
           </div>
         </div>
-        {#if contact.contactNumbers}
           <div class="card-text" use:dndzone={{items: contact.contactNumbers, flipDurationMs, dropFromOthersDisabled: true}} on:consider="{(event) => handleNumbersDndConsider(event, contact)}" on:finalize="{(event) => handleNumbersDndFinalize(event, contact)}">
             { #each contact.contactNumbers as contactNumber(contactNumber.id)}
               <div class="contactNumber" on:click={selectNumber}>
@@ -305,7 +319,7 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
                   {:else if contactNumber.type === "web"}
                   Website: {contactNumber.label ?contactNumber.label + " " : "" }<a href="{contactNumber.number}" target="#">{contactNumber.number}</a>
                   {:else if contactNumber.type === "zoom"}
-                  Zoom: <a href="{"https://zoom.us/j/"+contactNumber.number}" target="#" on:click={() => copyPassword(contactNumber.password)}>{contactNumber.label ? contactNumber.label : contactNumber.number}</a>
+                  Zoom: <a href="" target="#" on:click={() => copyPassword(contactNumber.number, contactNumber.password)}>{contactNumber.label ? contactNumber.label : contactNumber.number}</a>
                   {:else}
                   <div>{contact.number}</div>
                   {/if}
@@ -317,21 +331,6 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
               </div>
             {/each}
           </div>
-        {:else}
-        <div class="card-text">
-            {#if contact.type === "phone"}
-            Phone number: <a href="tel:{contact.number}" target="#">{contact.number}</a>
-            {:else if contact.type === "email"}
-            E-Mail: <a href="mailto:{contact.number}" target="#">{contact.number}</a>
-            {:else if contact.type === "web"}
-            Website: <a href="{contact.number}" target="#">{contact.number}</a>
-            {:else if contact.type === "zoom"}
-            Zoom: <a href="{"https://zoom.us/j/"+contact.number}" target="#" on:click={() => copyPassword(contact.password)}>{contact.number}</a>
-            {:else}
-            <div>{contact.number}</div>
-            {/if}
-          </div>
-        {/if}
         </div>
       {/each}
     </div>

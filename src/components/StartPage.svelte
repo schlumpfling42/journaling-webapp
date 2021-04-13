@@ -94,12 +94,6 @@ button.clock {
 img {
   width: 100%;
 }
-div.center {
-  height: inherit;
-  flex-grow: 5;
-  display: flex;
-  flex-direction: column;
-}
 @media (min-width: 800px){
   div.main {
     margin: 20px;
