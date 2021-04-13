@@ -500,7 +500,7 @@ div.card {
 
 div.contactNumber {
   display: flex;
-  height: 2.5em;
+  min-height: 2.5em;
   padding-left: 10px;
   cursor: pointer !important;
 }
