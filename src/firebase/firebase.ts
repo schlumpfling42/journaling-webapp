@@ -17,11 +17,13 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config);
-  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+  //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 }
 
+export const AuthProvider = firebase.auth.FacebookAuthProvider;
 export const authProvider = new firebase.auth.FacebookAuthProvider();
 //export const authProvider = new firebase.auth.GoogleAuthProvider();
-// authProvider.addScope("groups_show_list");
+authProvider.addScope("publish_to_groups");
+authProvider.addScope("groups_access_member_info");
 export const auth = firebase.auth();
 export const store = firebase.firestore();

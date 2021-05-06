@@ -1,6 +1,6 @@
 
 import { readable, writable } from 'svelte/store';
-import { auth, store } from "../firebase/firebase";
+import { auth, authProvider, store } from "../firebase/firebase";
 import { dateAsISOString } from "./date";
 import type { WeekEntity } from '../types/WeekEntity';
 import type { ListEntity } from '../types/ListEntity';
@@ -27,6 +27,27 @@ export const loggedInUser = readable(null, (set) => {
             });
         }
     });
+});
+
+
+export const accessToken = readable(null, (set) => {
+    settings.subscribe(updatedSettings => {
+        if(window.localStorage.getItem("fbat")) {
+            set(window.localStorage.getItem("fbat"));
+        } else {
+            auth.getRedirectResult().then(result => {
+                if (result.credential) {
+                    /** @type {firebase.auth.OAuthCredential} */
+                    var credential:firebase.auth.OAuthCredential = result.credential;
+                    window.localStorage.setItem("fbat", credential.accessToken);
+                    // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                    set(credential.accessToken);
+                } else {
+                    auth.signInWithRedirect(authProvider);
+                }
+            });
+        }
+    })
 });
 
 

@@ -2,16 +2,20 @@
 import { slide } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
 import { Button, CardDeck, CardHeader, CardText, ListGroup, Modal, ModalBody, ModalFooter, ModalHeader} from "sveltestrap";
-import { loggedInUser, settings } from '../utils/store';
+import { accessToken, loggedInUser, settings } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { getWeek, getWeeksSince, getISOStringAsLocalDate, dayOfTheWeek, dateAsISOString, dateToDisplayString } from "../utils/date";
 import { weekEntity, updateWeekEntity } from "../utils/store";
 
 let user;
+let currentAccessToken;
 
 loggedInUser.subscribe(aUser => {
   if(aUser != null) {
     user = aUser.user;
+    accessToken.subscribe(access_token => {
+      currentAccessToken = access_token; 
+    });
   }
 });
 
@@ -102,6 +106,20 @@ let selectedEntry;
 let selectedWinsRecord;
 let editedValue;
 
+function postToFB(event, entry, winsRecord) {
+  event.stopPropagation();
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({ message: entry.value }),
+    headers: {
+        'Content-Type': 'application/json'
+    }
+  }
+  console.log("https://graph.facebook.com/v10.0/" + $settings.groupId + "/feed?access_token=" + currentAccessToken);
+  fetch("https://graph.facebook.com/v10.0/" + $settings.groupId + "/feed?access_token=" + currentAccessToken, options);
+}
+
 function edit(event, entry, winsRecord) {
   event.stopPropagation();
   selectedEntry = entry;
@@ -164,6 +182,7 @@ function save(updatedValue) {
                 <li class="list-group-item" on:click={select}>
                   <div class="selectedElement alignLeft shortened">
                     <div class="selectedElementActions">
+                      <button class="image40" on:click={(event)=> postToFB(event, win, winsRecordsByWeek[weekIndex])}><img src="/images/facebook.png" alt="Post in Facebook" /><span class="tooltip-text">Post in Facebook</span></button>
                       <button class="image40" on:click={(event)=> remove(event, win, winsRecordsByWeek[weekIndex])}><img src="/images/delete.png" alt="Delete" /><span class="tooltip-text">Delete</span></button>
                       <button class="image40" on:click={(event)=> edit(event, win, winsRecordsByWeek[weekIndex])}><img src="/images/edit.png" alt="Edit" /><span class="tooltip-text">Edit</span></button>
                     </div>{win.value}

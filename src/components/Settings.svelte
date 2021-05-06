@@ -2,18 +2,28 @@
 import { slide } from 'svelte/transition';
 import { quintOut } from 'svelte/easing';
 import { Button, Col, Container, FormGroup, Input, Label, Row} from "sveltestrap";
-import { loggedInUser, settings, updateSettings } from '../utils/store';
+import { accessToken, loggedInUser, settings, updateSettings } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { dateAsISOString } from "../utils/date";
 import PinModal from './PinModal.svelte';
+import { each } from 'svelte/internal';
 
 let user;
+
+let groups = [];
 
 loggedInUser.subscribe(aUser => {
   if(aUser != null) {
     user = aUser.user;
+    accessToken.subscribe(async access_token => {
+        const response = await fetch("https://graph.facebook.com/" + user.providerData[0].uid + "/groups?access_token=" + access_token);
+        let responseData = await response.json();
+        groups = responseData.data; 
+    });
   }
 });
+
+
 
 function navigateTo(name) {
   $router.push({name});
@@ -22,18 +32,21 @@ function navigateTo(name) {
 function reload() {
   pin = $settings?.pin;
   startDate = $settings?.startDate?.substring(0,10);
+  groupId = $settings?.groupId;
 }
 
 function save() {
   let newSettings = {
     startDate: startDate ? dateAsISOString(new Date(startDate)) : dateAsISOString(new Date()),
     pin: pin == "" ? null : pin,
+    groupId,
     userId: user.uid
   };
   updateSettings(user.uid, newSettings).then(()=>
     settings.update(value => {
       value.startDate = startDate ? dateAsISOString(new Date(startDate)) : dateAsISOString(new Date());
       value.pin = pin == "" ? null : pin;
+      value.groupId = groupId == "" ? null : groupId;
       return value;
     }));
 }
@@ -41,6 +54,7 @@ function save() {
 let startDate;
 let pin;
 let verifyPin;
+let groupId;
 
 let accessVerified = false;
 
@@ -54,12 +68,13 @@ function load() {
       if(!pin && pin != "") {
         settingsHavePin = true;
       }
+      groupId = settings?.groupId;
     }
   });
 }
 
 $: pinChanged = (pin == "" ? null : pin) != $settings?.pin;
-$: changed = pinChanged || (startDate != $settings?.startDate?.substring(0,10));
+$: changed = pinChanged || (startDate != $settings?.startDate?.substring(0,10)) || (groupId == "" ? null : groupId) != $settings?.groupId;
 
 </script>
 <div class="page main" transition:slide="{{duration: 300, easing: quintOut}}">
@@ -121,11 +136,24 @@ $: changed = pinChanged || (startDate != $settings?.startDate?.substring(0,10));
             {/if}
         </Col>
       </Row>
+      <Row>
+        <Col sm=6 md={{ size: 6, offset: 3 }}>
+          <FormGroup>
+            <Label class="alignStart" for="verifyPin">Facebook Group</Label>
+            <select id="type" type="text" class="form-control" bind:value={groupId} placeholder="Group">
+              <option value=""></option>
+              {#each groups as group}
+              <option value={group.id}>{group.name}</option>
+              {/each}
+            </select>
+          </FormGroup>
+        </Col>
+      </Row>
       <Row class="align-right" align-h="end">
         <Col class="form-actions alignEnd">
           <div class="formActions">
             <Button color="secondary"on:click={reload} disabled={!changed}>Reset</Button>
-            <Button color="primary" on:click={save} disabled={!changed || pin != verifyPin}>Save</Button>
+            <Button color="primary" on:click={save} disabled={!changed || (pinChanged && pin != verifyPin)}>Save</Button>
           </div>
         </Col>
       </Row>

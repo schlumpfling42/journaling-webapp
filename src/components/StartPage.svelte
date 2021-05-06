@@ -1,6 +1,6 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
-import { loggedInUser, onSnapshot, onWeekSnapshot } from '../utils/store';
+import { accessToken, loggedInUser, onSnapshot, onWeekSnapshot } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { getISOStringAsLocalDate, getWeek } from '../utils/date';
 
@@ -67,7 +67,7 @@ function navigateTo(name) {
     <h4>You have {wins} {wins == 1 ? "Win" : "Wins"}</h4>
     <h4>You journaled {journalEntries + angerJournalEntries} times</h4>
     {#if integrityChecks == 0}
-    <h4>You not checked off any integrity items</h4>
+    <h4>You didn't check off any integrity items yet</h4>
     {:else if integrityChecks == 1}
     <h4>You checked off 1 integrity item</h4>
     {:else}

@@ -7,6 +7,7 @@ import { router } from '@spaceavocado/svelte-router';
 import { dateAsISOString} from "../utils/date";
 import { entity } from "../utils/store";
 import {dndzone} from "svelte-dnd-action";
+import copy from "clipboard-copy";
 
 let user;
 
@@ -243,14 +244,8 @@ function save() {
   password = null;
 }
 
-function copyPassword(number, password) {
-  window.focus();
-  navigator.clipboard.writeText(password).then(function() {
-    window.open("https://zoom.us/j/"+number);
-  }, function(error) {
-    console.error("unable to write to clipboard. Error:");
-    console.log(error);
-  });
+function copyPassword(password) {
+  copy(password);
 }
 
 function validatePhoneNumber(e, element) {
@@ -319,7 +314,7 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
                   {:else if contactNumber.type === "web"}
                   Website: {contactNumber.label ?contactNumber.label + " " : "" }<a href="{contactNumber.number}" target="#">{contactNumber.number}</a>
                   {:else if contactNumber.type === "zoom"}
-                  Zoom: <a href="" target="#" on:click={() => copyPassword(contactNumber.number, contactNumber.password)}>{contactNumber.label ? contactNumber.label : contactNumber.number}</a>
+                  Zoom: <a href="{"https://zoom.us/j/"+ contactNumber.number}" target="#" on:click={() => copyPassword(contactNumber.password)}>{contactNumber.label ? contactNumber.label : contactNumber.number}</a>
                   {:else}
                   <div>{contact.number}</div>
                   {/if}
