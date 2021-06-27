@@ -2,6 +2,7 @@
 import createRouter from '@spaceavocado/svelte-router';
 import RouterView from '@spaceavocado/svelte-router/component/view';
 import Contacts from './components/Contacts.svelte';
+import Gratitude from './components/Gratitude.svelte';
 import Habits from './components/Habits.svelte';
 import IntegrityList from './components/IntegrityList.svelte';
 import Journal from './components/Journal.svelte';
@@ -28,6 +29,11 @@ import Wins from './components/Wins.svelte';
 						path: '/wins',
 						name: 'Wins',
 						component: Wins,
+					},
+					{
+						path: '/gratitude',
+						name: 'Gratitude',
+						component: Gratitude,
 					},
 					{
 						path: '/journal',

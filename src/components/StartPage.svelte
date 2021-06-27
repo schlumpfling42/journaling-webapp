@@ -12,6 +12,7 @@ let journalEntries = 0;
 let angerJournalEntries = 0;
 let integrityChecks = 0;
 let habits = 0;
+let gratitude = 0;
 
 loggedInUser.subscribe(aUser => {
   if(aUser != null) {
@@ -20,6 +21,12 @@ loggedInUser.subscribe(aUser => {
     onWeekSnapshot("wins", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
       if(recordDocument.exists) {
         wins = recordDocument.data().entities.length
+      }
+    });
+
+    onWeekSnapshot("gratitude", currentWeek.firstDayOfTheWeekString, user.uid, (recordDocument) => {
+      if(recordDocument.exists) {
+        gratitude = recordDocument.data().entities.length
       }
     });
     
@@ -56,15 +63,19 @@ function navigateTo(name) {
 </script>
 <div class="main" transition:slide="{{duration: 300}}">
   <h3>How is it going<br/>{user?.displayName}?</h3>
-  <button class="zero clock" on:click={()=> navigateTo("Wins")}><img src="/images/win.png" alt="Wins"/><span class="tooltip-text">Wins</span></button> 
-  <button class="ten clock" on:click={()=> navigateTo("Journal")}><img src="/images/journal.png" alt="Journal"/><span class="tooltip-text">Journal</span></button>
-  <button class="eight clock" on:click={()=> navigateTo("Anger")}><img src="/images/anger.png" alt="Anger"/><span class="tooltip-text">Anger</span></button> 
-  <button class="six clock" on:click={()=> navigateTo("Integrity")}><img src="/images/integritylist.png" alt="Integrity List"/><span class="tooltip-text">Integrity List</span></button>
-  <button class="four clock" on:click={()=> navigateTo("Habits")}><img src="/images/habit.png" alt="Habits"/><span class="tooltip-text">Habits</span></button>
-  <button class="two clock" on:click={()=> navigateTo("Contacts")}><img src="/images/contacts.png" alt="Contacts"/><span class="tooltip-text">Contacts</span></button>
+  <div class="circle-container">
+    <button class="clock" on:click={()=> navigateTo("Wins")}><img src="/images/win.png" alt="Wins"/><span class="tooltip-text">Wins</span></button> 
+    <button class="clock" on:click={()=> navigateTo("Gratitude")}><img src="/images/gratitude.png" alt="Gratitude"/><span class="tooltip-text">Gratitude</span></button>
+    <button class="clock" on:click={()=> navigateTo("Journal")}><img src="/images/journal.png" alt="Journal"/><span class="tooltip-text">Journal</span></button>
+    <button class="clock" on:click={()=> navigateTo("Anger")}><img src="/images/anger.png" alt="Anger"/><span class="tooltip-text">Anger</span></button> 
+    <button class="clock" on:click={()=> navigateTo("Integrity")}><img src="/images/integritylist.png" alt="Integrity List"/><span class="tooltip-text">Integrity List</span></button>
+    <button class="clock" on:click={()=> navigateTo("Habits")}><img src="/images/habit.png" alt="Habits"/><span class="tooltip-text">Habits</span></button>
+    <button class="clock" on:click={()=> navigateTo("Contacts")}><img src="/images/contacts.png" alt="Contacts"/><span class="tooltip-text">Contacts</span></button>
+  </div>
   <div class="centerInCircle">
     <h3>This week</h3>
     <h4>You have {wins} {wins == 1 ? "Win" : "Wins"}</h4>
+    <h4>You have been grateful for {gratitude} {gratitude == 1 ? "thing" : "things"}</h4>
     <h4>You journaled {journalEntries + angerJournalEntries} times</h4>
     {#if integrityChecks == 0}
     <h4>You not checked off any integrity items</h4>
@@ -83,7 +94,44 @@ function navigateTo(name) {
   </div>
   <button class="settings image60" on:click={()=> navigateTo("Settings")}><img src="/images/setting.png" alt="Settings" /><span class="tooltip-text">Settings</span></button>
 </div>
-<style>
+<style lang="scss">
+@import "node_modules/mathsass/dist/math";
+@function subtract($a, $b) {
+  @return calc(#{$a} - #{$b});
+}
+@function add($a, $b) {
+  @return calc(#{$a} + #{$b});
+}
+@mixin on-circle($top, $item-count, $circle-height, $circle-width, $item-size) {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: $top;
+  bottom: 5%;
+  z-index: 10;
+  
+  > * {
+    display: block;
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width:  $item-size;
+    height: $item-size;
+  
+    $angle: (360 / $item-count);
+    $rot: 0;
+
+    @for $i from 1 through $item-count {
+      &:nth-of-type(#{$i}) {
+        transform:
+          translateX(subtract(sin($rot*1deg)*-$circle-width, $item-size))
+          translateY(add(cos($rot*1deg)*-$circle-height, $item-size))
+      }
+
+      $rot: $rot + $angle;
+    }
+  }
+}
 button.clock {
   width: auto;
   height: auto;
@@ -94,7 +142,8 @@ button.clock {
 img {
   width: 100%;
 }
-@media (min-width: 800px){
+
+@media (min-width: 800px) {
   div.main {
     margin: 20px;
   }
@@ -112,29 +161,34 @@ img {
     top: calc(20% - 75px);
     left: calc(50% - 75px);
   }
-  button.ten {
+  button.eleven {
     position: absolute;
-    top: calc(40% - 75px);
+    top: calc(33% - 75px);
     left: calc(30% - 75px);
   }
-  button.eight {
+  button.nine {
     position: absolute;
-    top: calc(60% - 75px);
+    top: calc(53% - 75px);
     left: calc(30% - 75px);
   }
-  button.six {
+  button.seven {
     position: absolute;
     top: calc(75% - 75px);
-    left: calc(50% - 75px);
+    left: calc(40% - 75px);
   }
-  button.four {
+  button.five {
     position: absolute;
-    top: calc(60% - 75px);
+    top: calc(75% - 75px);
+    left: calc(60% - 75px);
+  }
+  button.three {
+    position: absolute;
+    top: calc(53% - 75px);
     left: calc(70% - 75px);
   }
-  button.two {
+  button.one {
     position: absolute;
-    top: calc(40% - 75px);
+    top: calc(33% - 75px);
     left: calc(70% - 75px);
   }
 
@@ -149,10 +203,65 @@ img {
     right: calc(30% + 85px);
   }
 }
-@media (max-width: 800px){
-  h3 {
-    margin-right: 20px;
+
+@media (min-width: 1600px){
+  .circle-container {
+    @include on-circle($top: 5%, $item-count: 7, $circle-height: 30vh, $circle-width: 20vw, $item-size: 80px); 
+    
+    button { 
+      display: block; 
+      
+      &:hover,
+      &:active {
+        filter: grayscale(0);
+      }
+    }
   }
+}
+@media (min-width: 1200px) and (max-width: 1600px) {
+  .circle-container {
+    @include on-circle($top: 5%, $item-count: 7, $circle-height: 30vh, $circle-width: 30vw, $item-size: 80px); 
+    
+    button { 
+      display: block; 
+      
+      &:hover,
+      &:active {
+        filter: grayscale(0);
+      }
+    }
+  }
+}
+@media (min-width: 800px) and (max-width: 1200px) {
+  .circle-container {
+    @include on-circle($top: 5%, $item-count: 7, $circle-height: 30vh, $circle-width: 35vw, $item-size: 80px); 
+    
+    button { 
+      display: block; 
+      
+      &:hover,
+      &:active {
+        filter: grayscale(0);
+      }
+    }
+  }
+}
+@media (max-width: 800px){
+.circle-container {
+    @include on-circle($top: 15%, $item-count: 7, $circle-height: 35vh, $circle-width: 40vw, $item-size: 50px); 
+    
+    button { 
+      display: block; 
+      
+      &:hover,
+      &:active {
+        filter: grayscale(0);
+      }
+    }
+  }
+}
+@media (max-width: 800px){
+
   .centerInCircle h4 {
     font-size: large;
   }
@@ -174,31 +283,38 @@ img {
     top: calc(20% - 40px);
     left: calc(50% - 40px);
   }
-  button.ten {
+  button.eleven {
     position: absolute;
-    top: calc(40% - 40px);
+    top: calc(35% - 40px);
     left: calc(15% - 40px);
   }
-  button.eight {
+  button.nine {
     position: absolute;
     top: calc(60% - 40px);
     left: calc(15% - 40px);
   }
-  button.six {
+  button.seven {
     position: absolute;
-    top: calc(85% - 40px);
-    left: calc(50% - 40px);
+    top: calc(80% - 40px);
+    left: calc(35% - 40px);
   }
-  button.four {
+  button.five {
+    position: absolute;
+    top: calc(80% - 40px);
+    left: calc(65% - 40px);
+  }
+  button.three {
     position: absolute;
     top: calc(60% - 40px);
-    left: calc(85% - 40px);
+    left: calc(85% - 40px); 
   }
-  button.two {
+
+  button.one {
     position: absolute;
-    top: calc(40% - 40px);
+    top: calc(35% - 40px);
     left: calc(85% - 40px);
   }
+
 
   div.centerInCircle {
     display: flex;
@@ -211,4 +327,6 @@ img {
     right: calc(20% + 15px);
   }
 }
+
+
 </style>

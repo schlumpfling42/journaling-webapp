@@ -7,6 +7,12 @@ service cloud.firestore {
       allow read: if resource == null ||resource.data.userId == request.auth.uid;
       allow write: if resource == null || resource.data.userId  == request.auth.uid;
     }
+
+    // Match any document in the 'gratitude' collection
+    match /gratitude/{gratitude} {
+      allow read: if resource == null ||resource.data.userId == request.auth.uid;
+      allow write: if resource == null || resource.data.userId  == request.auth.uid;
+    }
     // Match any document in the 'journal' collection
     match /journal/{journal} {
       allow read: if resource == null || resource.data.userId == request.auth.uid;

@@ -213,3 +213,4 @@ typings/
 # Private
 .idea
 .firebase/*.*
+firestore.indexes.json
