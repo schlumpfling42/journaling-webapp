@@ -1,6 +1,5 @@
 <script lang="ts">
 import { slide } from 'svelte/transition';
-import { quintOut } from 'svelte/easing';
 import { Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "sveltestrap";
 import { loggedInUser, settings, updateEntity } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
@@ -122,7 +121,7 @@ function save() {
 $: saveEnabled = value && value.length > 0;
 
 </script>
-<div class="page main" transition:slide={{duration: 300, easing: quintOut}}>
+<div class="page main">
   <div class="header">
     <button class="back image60"  on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="/images/habit.png" alt="Habits"/>

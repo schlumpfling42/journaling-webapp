@@ -1,6 +1,4 @@
 <script lang="ts">
-import { slide } from 'svelte/transition';
-import { quintOut } from 'svelte/easing';
 import { Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "sveltestrap";
 import { loggedInUser, settings, updateEntity } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
@@ -258,6 +256,16 @@ function validatePhoneNumber(e, element) {
   return true;
 }
 
+function cancel() {
+  selectedEntry = null;
+  selectedContact = null;
+  value = null;
+  label = null;
+  number = null;
+  type= null;
+  password = null;
+}
+
 function handleContactsDndConsider(e) {
   contacts = e.detail.items;
 }
@@ -283,7 +291,7 @@ const flipDurationMs = 300;
 $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChangeNumber || (type && type.length > 0) && (number && number.length > 0));
 
 </script>
-<div class="page main" transition:slide="{{duration: 300, easing: quintOut}}">
+<div class="page main">
   <div class="header">
     <button class="back image60" on:click={()=> navigateTo("Home")}><img src="/images/back.png" alt="Back" /><span class="tooltip-text">Back</span></button>
     <img class="header" src="/images/contacts.png" alt="Contacts"/>
@@ -395,7 +403,7 @@ $: saveEnabled = (!isChangeContact || (value && value.length > 0)) && (!isChange
     </Container>
     </ModalBody>
     <ModalFooter>
-      <Button color="secondary" on:click={() => selectedEntry = null}>Cancel</Button>
+      <Button color="secondary" on:click={() => cancel()}>Cancel</Button>
       <Button color="primary" disabled={!saveEnabled} on:click={() => save()}>Save</Button>
     </ModalFooter>
   </Modal>

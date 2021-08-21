@@ -1,5 +1,4 @@
 <script lang="ts">
-import { slide } from 'svelte/transition';
 import { loggedInUser, onSnapshot, onWeekSnapshot } from '../utils/store';
 import { router } from '@spaceavocado/svelte-router';
 import { getISOStringAsLocalDate, getWeek } from '../utils/date';
@@ -61,7 +60,7 @@ function navigateTo(name) {
 }
 
 </script>
-<div class="main" transition:slide="{{duration: 300}}">
+<div class="main">
   <h3>How is it going<br/>{user?.displayName}?</h3>
   <div class="circle-container">
     <button class="clock" on:click={()=> navigateTo("Wins")}><img src="/images/win.png" alt="Wins"/><span class="tooltip-text">Wins</span></button> 
@@ -143,6 +142,11 @@ img {
   width: 100%;
 }
 
+button:hover {
+  border-radius: 50%;
+  box-shadow: 0 0 25px grey;
+}
+
 @media (min-width: 800px) {
   div.main {
     margin: 20px;
@@ -155,41 +159,6 @@ img {
   button.clock img {
     height: 150px;
     width: auto;
-  }
-  button.zero {
-    position: absolute;
-    top: calc(20% - 75px);
-    left: calc(50% - 75px);
-  }
-  button.eleven {
-    position: absolute;
-    top: calc(33% - 75px);
-    left: calc(30% - 75px);
-  }
-  button.nine {
-    position: absolute;
-    top: calc(53% - 75px);
-    left: calc(30% - 75px);
-  }
-  button.seven {
-    position: absolute;
-    top: calc(75% - 75px);
-    left: calc(40% - 75px);
-  }
-  button.five {
-    position: absolute;
-    top: calc(75% - 75px);
-    left: calc(60% - 75px);
-  }
-  button.three {
-    position: absolute;
-    top: calc(53% - 75px);
-    left: calc(70% - 75px);
-  }
-  button.one {
-    position: absolute;
-    top: calc(33% - 75px);
-    left: calc(70% - 75px);
   }
 
   div.centerInCircle {
@@ -248,7 +217,7 @@ img {
 }
 @media (max-width: 800px){
 .circle-container {
-    @include on-circle($top: 15%, $item-count: 7, $circle-height: 35vh, $circle-width: 40vw, $item-size: 50px); 
+    @include on-circle($top: 15%, $item-count: 7, $circle-height: 35vh, $circle-width: 40vw, $item-size: 48px); 
     
     button { 
       display: block; 
